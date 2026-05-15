@@ -8,7 +8,6 @@ const BASE_URL = 'https://www.paragliding-oludeniz.com';
 async function generate() {
     console.log('🚀 Starting Static Site Generation...');
 
-    // 1. Fetch Posts
     const response = await fetch(`${SUPABASE_URL}/rest/v1/posts?select=*&order=created_at.desc`, {
         headers: {
             'apikey': ANON_KEY,
@@ -46,20 +45,26 @@ async function generate() {
 
     console.log(`📦 Fetched and sanitized ${posts.length} posts.`);
 
-    // 2. Setup dist directory
     const dist = 'dist';
     if (fs.existsSync(dist)) fs.rmSync(dist, { recursive: true });
     fs.mkdirSync(dist);
     fs.mkdirSync(path.join(dist, 'blog'));
     fs.mkdirSync(path.join(dist, 'assets'));
 
-    // 3. Helper to format Markdown-ish content
+    const styleContent = fs.readFileSync('style.css', 'utf8');
     const formatContent = (content) => content
         .replace(/^# (.*$)/gim, '<h2 style="margin-top:2rem;">$1</h2>')
         .replace(/^## (.*$)/gim, '<h3 style="margin-top:1.5rem;">$1</h3>')
         .replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>')
         .replace(/^\- (.*$)/gim, '<li style="margin-left:1.5rem; margin-bottom:0.5rem;">$1</li>')
         .replace(/\n/g, '<br>');
+
+    const processHtml = (html) => {
+        return html
+            .replace(/<link rel="stylesheet" href="\/style.css">/g, `<style>${styleContent}</style>`)
+            .replace(/<link rel="stylesheet" href="style.css">/g, `<style>${styleContent}</style>`)
+            .replace('<link rel="preconnect" href="https://fonts.googleapis.com">', '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>');
+    };
 
     const generateCard = (post) => {
         const imageUrl = (post.image_url && !post.image_url.includes('example.com')) 
@@ -77,7 +82,6 @@ async function generate() {
         </article>`;
     };
 
-    // 4. Generate BlogPosting Schema for individual posts
     const generateBlogSchema = (post) => `
     <script type="application/ld+json">
     {
@@ -104,11 +108,11 @@ async function generate() {
     }
     </script>`;
 
-    // 5. Generate Index Page (Latest 3)
+    // 5. Generate Index Page
     let indexHtml = fs.readFileSync('index.html', 'utf8');
     const latestCards = posts.slice(0, 3).map(generateCard).join('');
     indexHtml = indexHtml.replace('<!-- LATEST_POSTS_INJECTION -->', latestCards);
-    fs.writeFileSync(path.join(dist, 'index.html'), indexHtml);
+    fs.writeFileSync(path.join(dist, 'index.html'), processHtml(indexHtml));
 
     // 6. Generate Blog List Page
     const blogTemplate = fs.readFileSync('blog.html', 'utf8');
@@ -120,15 +124,13 @@ async function generate() {
         .replace('<!-- PAGE_TITLE -->', '')
         .replace('<!-- PAGE_DESCRIPTION -->', '');
     
-    // TRU STATIC for listing page: Remove redundant scripts
     const bScriptStartIndex = blogListHtml.indexOf('<script>');
     const bScriptEndIndex = blogListHtml.lastIndexOf('</script>');
     if (bScriptStartIndex !== -1 && bScriptEndIndex > bScriptStartIndex) {
         blogListHtml = blogListHtml.substring(0, bScriptStartIndex) + '<!-- Static Archive Rendered -->' + blogListHtml.substring(bScriptEndIndex + 9);
     }
-    // Blog listing page needs its own H1
     blogListHtml = blogListHtml.replace('<h2>SkyHigh <span style="color: var(--primary)">Stories</span></h2>', '<h1>SkyHigh <span style="color: var(--primary)">Stories</span></h1>');
-    fs.writeFileSync(path.join(dist, 'blog.html'), blogListHtml);
+    fs.writeFileSync(path.join(dist, 'blog.html'), processHtml(blogListHtml));
 
     // 7. Generate Individual Post Pages
     for (const post of posts) {
@@ -137,7 +139,6 @@ async function generate() {
             .replace(/<!-- OG_URL -->.*?["']/g, `${BASE_URL}/blog/${post.slug}"`)
             .replace('<!-- PAGE_TITLE -->SkyHigh Stories | Ölüdeniz Paragliding Blog', `${post.title} | SkyHigh Ölüdeniz`)
             .replace('<!-- PAGE_DESCRIPTION -->Latest paragliding news and expert flight stories from the SkyHigh team in Ölüdeniz, Fethiye.', post.excerpt || post.title)
-            // Enhanced Social Meta
             .replace(/<meta property="og:title" content=".*?"/g, `<meta property="og:title" content="${post.title} | SkyHigh Stories"`)
             .replace(/<meta property="og:description" content=".*?"/g, `<meta property="og:description" content="${post.excerpt || post.title}"`)
             .replace(/<meta name="twitter:title" content=".*?"/g, `<meta name="twitter:title" content="${post.title} | SkyHigh Stories"`)
@@ -152,68 +153,50 @@ async function generate() {
             .replace('<div id="blog-list-view">', '<div id="blog-list-view" style="display:none;">')
             .replace('<h2>SkyHigh <span style="color: var(--primary)">Stories</span></h2>', '<div style="font-size: 1.5rem; font-weight: 800; margin-bottom: 0.5rem;">SkyHigh <span style="color: var(--primary)">Stories</span></div>');
         
-        // Inject BlogPosting Schema before </head>
         postHtml = postHtml.replace('</head>', generateBlogSchema(post) + '\n</head>');
-
-        // TRU STATIC: Remove the redundant script block from the generated file
-        // This ensures the page is 100% static and doesn't try to sync with the API again.
         const scriptStartIndex = postHtml.indexOf('<script>');
         const scriptEndIndex = postHtml.lastIndexOf('</script>');
         if (scriptStartIndex !== -1 && scriptEndIndex > scriptStartIndex) {
-            // We want to keep script.js but remove the internal handleRouting logic
             postHtml = postHtml.substring(0, scriptStartIndex) + '<!-- Static Content Rendered -->' + postHtml.substring(scriptEndIndex + 9);
         }
-        
-        fs.writeFileSync(path.join(dist, 'blog', `${post.slug}.html`), postHtml);
+        fs.writeFileSync(path.join(dist, 'blog', `${post.slug}.html`), processHtml(postHtml));
     }
 
-    // 8. Copy Static Assets & Files
-    const filesToCopy = [
-        'style.css', 'script.js', 'robots.txt', 'google0ea4b84cd5b64d00.html',
-        // Core pages
+    // 8. Copy and Process All Other Pages
+    const pagesToInline = [
         'pricing.html', 'safety.html', 'location.html', 'faq.html', 'booking.html',
-        // Money pages — Main
         'oludeniz-paragliding.html', 'fethiye-paragliding.html',
         'oludeniz-paragliding-price.html', 'oludeniz-paragliding-booking.html',
         'fethiye-paragliding-price.html', 'fethiye-paragliding-booking.html',
-        // Money pages — Location
         'marmaris-paragliding-price.html', 'marmaris-paragliding-tour-oludeniz.html',
         'antalya-paragliding-day-trip-oludeniz.html', 'kas-paragliding-experience.html',
-        // Money pages — Trust/Info
         'babadaag-paragliding-experience.html', 'is-paragliding-safe-oludeniz.html',
         'what-to-expect-paragliding-oludeniz.html', 'paragliding-oludeniz-guide.html',
-        // Money pages — Sales
         'oludeniz-tandem-paragliding.html', 'vip-paragliding-oludeniz-private-flight.html',
         'paragliding-photo-video-package-oludeniz.html', 'sunset-paragliding-oludeniz.html',
-        // Money pages — Seasonal
         'best-time-paragliding-oludeniz.html', 'oludeniz-paragliding-weather-guide.html',
         'summer-paragliding-fethiye.html'
     ];
-    filesToCopy.forEach(file => {
+
+    pagesToInline.forEach(page => {
+        if (fs.existsSync(page)) {
+            const content = fs.readFileSync(page, 'utf8');
+            fs.writeFileSync(path.join(dist, page), processHtml(content));
+        }
+    });
+
+    const staticFiles = ['script.js', 'robots.txt', 'google0ea4b84cd5b64d00.html'];
+    staticFiles.forEach(file => {
         if (fs.existsSync(file)) fs.copyFileSync(file, path.join(dist, file));
     });
-    
-    // Copy Assets folder
+
     if (fs.existsSync('assets')) {
         const assets = fs.readdirSync('assets');
         assets.forEach(asset => fs.copyFileSync(path.join('assets', asset), path.join(dist, 'assets', asset)));
     }
 
-    // 9. Generate Complete Sitemap with ALL pages
     const today = new Date().toISOString().split('T')[0];
-    const moneyPages = [
-        'oludeniz-paragliding', 'fethiye-paragliding',
-        'oludeniz-paragliding-price', 'oludeniz-paragliding-booking',
-        'fethiye-paragliding-price', 'fethiye-paragliding-booking',
-        'marmaris-paragliding-price', 'marmaris-paragliding-tour-oludeniz',
-        'antalya-paragliding-day-trip-oludeniz', 'kas-paragliding-experience',
-        'babadaag-paragliding-experience', 'is-paragliding-safe-oludeniz',
-        'what-to-expect-paragliding-oludeniz', 'paragliding-oludeniz-guide',
-        'oludeniz-tandem-paragliding', 'vip-paragliding-oludeniz-private-flight',
-        'paragliding-photo-video-package-oludeniz', 'sunset-paragliding-oludeniz',
-        'best-time-paragliding-oludeniz', 'oludeniz-paragliding-weather-guide',
-        'summer-paragliding-fethiye'
-    ];
+    const moneyPages = pagesToInline.map(p => p.replace('.html', ''));
     const sitemapContent = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>${BASE_URL}/</loc><lastmod>${today}</lastmod><priority>1.0</priority></url>
@@ -223,13 +206,13 @@ async function generate() {
   <url><loc>${BASE_URL}/location</loc><lastmod>${today}</lastmod><priority>0.9</priority></url>
   <url><loc>${BASE_URL}/faq</loc><lastmod>${today}</lastmod><priority>0.9</priority></url>
   <url><loc>${BASE_URL}/booking</loc><lastmod>${today}</lastmod><priority>0.7</priority></url>
-  ${moneyPages.filter(p => fs.existsSync(`${p}.html`)).map(p => `<url><loc>${BASE_URL}/${p}</loc><lastmod>${today}</lastmod><priority>0.9</priority></url>`).join('\n  ')}
+  ${moneyPages.map(p => `<url><loc>${BASE_URL}/${p}</loc><lastmod>${today}</lastmod><priority>0.9</priority></url>`).join('\n  ')}
   ${posts.map(p => `<url><loc>${BASE_URL}/blog/${p.slug}</loc><lastmod>${new Date(p.created_at).toISOString().split('T')[0]}</lastmod><priority>0.7</priority></url>`).join('\n  ')}
 </urlset>`;
     fs.writeFileSync(path.join(dist, 'sitemap.xml'), sitemapContent);
     fs.writeFileSync('sitemap.xml', sitemapContent);
 
-    console.log('✅ SSG Completed! Site is ready in /dist');
+    console.log('✅ SSG Completed with Inlined CSS! Site is optimized for speed.');
 }
 
 generate().catch(console.error);
