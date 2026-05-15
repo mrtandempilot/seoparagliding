@@ -149,7 +149,8 @@ async function generate() {
                 <div class="post-content" style="line-height: 1.8; font-size: 1.1rem; color: #cbd5e1;">${formatContent(post.content)}</div>
             `)
             .replace('display: none; /* Shown only when slug is present */', 'display: block;')
-            .replace('<div id="blog-list-view">', '<div id="blog-list-view" style="display:none;">');
+            .replace('<div id="blog-list-view">', '<div id="blog-list-view" style="display:none;">')
+            .replace('<h2>SkyHigh <span style="color: var(--primary)">Stories</span></h2>', '<div style="font-size: 1.5rem; font-weight: 800; margin-bottom: 0.5rem;">SkyHigh <span style="color: var(--primary)">Stories</span></div>');
         
         // Inject BlogPosting Schema before </head>
         postHtml = postHtml.replace('</head>', generateBlogSchema(post) + '\n</head>');
