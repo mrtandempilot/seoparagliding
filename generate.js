@@ -114,8 +114,8 @@ async function generate() {
     const blogTemplate = fs.readFileSync('blog.html', 'utf8');
     const allCards = posts.map(generateCard).join('');
     let blogListHtml = blogTemplate
-        .replace(/<!-- CANONICAL_URL -->.*?["']/g, `<!-- CANONICAL_URL -->${BASE_URL}/blog"`)
-        .replace(/<!-- OG_URL -->.*?["']/g, `<!-- OG_URL -->${BASE_URL}/blog"`)
+        .replace(/<!-- CANONICAL_URL -->.*?["']/g, `${BASE_URL}/blog"`)
+        .replace(/<!-- OG_URL -->.*?["']/g, `${BASE_URL}/blog"`)
         .replace('<!-- LATEST_POSTS_INJECTION -->', allCards)
         .replace('<!-- PAGE_TITLE -->', '')
         .replace('<!-- PAGE_DESCRIPTION -->', '');
@@ -133,8 +133,8 @@ async function generate() {
     // 7. Generate Individual Post Pages
     for (const post of posts) {
         let postHtml = blogTemplate
-            .replace(/<!-- CANONICAL_URL -->.*?["']/g, `<!-- CANONICAL_URL -->${BASE_URL}/blog/${post.slug}"`)
-            .replace(/<!-- OG_URL -->.*?["']/g, `<!-- OG_URL -->${BASE_URL}/blog/${post.slug}"`)
+            .replace(/<!-- CANONICAL_URL -->.*?["']/g, `${BASE_URL}/blog/${post.slug}"`)
+            .replace(/<!-- OG_URL -->.*?["']/g, `${BASE_URL}/blog/${post.slug}"`)
             .replace('<!-- PAGE_TITLE -->SkyHigh Stories | Ölüdeniz Paragliding Blog', `${post.title} | SkyHigh Ölüdeniz`)
             .replace('<!-- PAGE_DESCRIPTION -->Latest paragliding news and expert flight stories from the SkyHigh team in Ölüdeniz, Fethiye.', post.excerpt || post.title)
             // Enhanced Social Meta
