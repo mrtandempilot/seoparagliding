@@ -15,8 +15,36 @@ async function generate() {
             'Authorization': `Bearer ${ANON_KEY}`
         }
     });
-    const posts = await response.json();
-    console.log(`📦 Fetched ${posts.length} posts from Supabase.`);
+    let posts = await response.json();
+    
+    // 🔥 DATA OVERRIDE: Force replace Turkish posts with English high-value content
+    posts = posts.map(post => {
+        if (post.slug === 'supabase-ile-dinamik-blog-yonetimi' || post.id === 'b1b60965-566a-4aca-afb0-c984981722e3') {
+            return {
+                ...post,
+                title: "Babadağ Mountain Guide: Everything You Need to Know",
+                slug: "babadag-mountain-paragliding-guide",
+                excerpt: "Planning a flight from Babadağ? Here is your complete guide to altitude, weather, and launch sites.",
+                category: "Guide",
+                image_url: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1200",
+                content: "# Babadağ Mountain: The World's Best Paragliding Peak\n\nBabadağ Mountain rises 1,969 meters above the Mediterranean coast of Ölüdeniz. It is the highest coastal paragliding launch site in the world.\n\n## Why Choose Babadağ?\nThe vertical drop from 1,960m directly to sea level within 5km creates unmatched thermals and views."
+            };
+        }
+        if (post.slug === 'oludenizde-gokyuzu-ozgurlugu-yamac-parasutu-rehberi' || post.id === '3e0d7dba-f0a7-49b6-8c6d-e63db175d9e8') {
+            return {
+                ...post,
+                title: "Ölüdeniz Paragliding Price Guide 2026",
+                slug: "oludeniz-paragliding-price-guide-2026",
+                excerpt: "Current rates, package inclusions, and how to book the best tandem flight in Fethiye.",
+                category: "Pricing",
+                image_url: "https://images.unsplash.com/photo-1596895111956-6277744f9548?auto=format&fit=crop&w=1200",
+                content: "# Ölüdeniz Paragliding Pricing 2026\n\nHow much does it cost to fly in Ölüdeniz? Here is the breakdown:\n\n- Standard Tandem: $150\n- 4K Media Bundle: $190\n- Sunset Premium: $200"
+            };
+        }
+        return post;
+    });
+
+    console.log(`📦 Fetched and sanitized ${posts.length} posts.`);
 
     // 2. Setup dist directory
     const dist = 'dist';
