@@ -26,7 +26,7 @@ async function generate() {
                 slug: "babadag-mountain-paragliding-guide",
                 excerpt: "Planning a flight from Babadağ? Here is your complete guide to altitude, weather, and launch sites.",
                 category: "Guide",
-                image_url: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=800&q=80",
+                image_url: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=600&q=70",
                 content: "# Babadağ Mountain: The World's Best Paragliding Peak\n\nBabadağ Mountain rises 1,969 meters above the Mediterranean coast of Ölüdeniz. It is the highest coastal paragliding launch site in the world.\n\n## Why Choose Babadağ?\nThe vertical drop from 1,960m directly to sea level within 5km creates unmatched thermals and views."
             };
         }
@@ -37,7 +37,7 @@ async function generate() {
                 slug: "oludeniz-paragliding-price-guide-2026",
                 excerpt: "Current rates, package inclusions, and how to book the best tandem flight in Fethiye.",
                 category: "Pricing",
-                image_url: "https://images.unsplash.com/photo-1533310266094-8898a03807dd?auto=format&fit=crop&w=800&q=80",
+                image_url: "https://images.unsplash.com/photo-1533310266094-8898a03807dd?auto=format&fit=crop&w=600&q=70",
                 content: "# Ölüdeniz Paragliding Pricing 2026\n\nHow much does it cost to fly in Ölüdeniz? Here is the breakdown:\n\n- Standard Tandem: $150\n- 4K Media Bundle: $190\n- Sunset Premium: $200"
             };
         }
@@ -64,7 +64,7 @@ async function generate() {
     const generateCard = (post) => {
         const imageUrl = (post.image_url && !post.image_url.includes('example.com')) 
             ? post.image_url 
-            : '/assets/hero.png';
+            : 'https://images.unsplash.com/photo-1533310266094-8898a03807dd?auto=format&fit=crop&w=600&q=70';
         return `
         <article class="blog-card">
             <img src="${imageUrl}" alt="${post.title} - Ölüdeniz paragliding" class="blog-img">
@@ -145,7 +145,7 @@ async function generate() {
             .replace('<!-- POST_DETAIL_INJECTION -->', `
                 <p style="color: var(--primary); font-weight: 700; margin-bottom: 0.5rem;">${post.category || 'Adventure'} • <time datetime="${post.created_at}">${new Date(post.created_at).toLocaleDateString()}</time></p>
                 <h1 style="font-size: 3rem; margin-bottom: 2rem; line-height: 1.2;">${post.title}</h1>
-                <img src="${(post.image_url && !post.image_url.includes('example.com')) ? post.image_url : 'https://images.unsplash.com/photo-1533310266094-8898a03807dd?auto=format&fit=crop&w=800&q=80'}" alt="${post.title} - Ölüdeniz paragliding" style="width: 100%; border-radius: var(--radius); margin-bottom: 3rem;">
+                <img src="${(post.image_url && !post.image_url.includes('example.com')) ? post.image_url : 'https://images.unsplash.com/photo-1533310266094-8898a03807dd?auto=format&fit=crop&w=1000&q=70'}" alt="${post.title} - Ölüdeniz paragliding" style="width: 100%; border-radius: var(--radius); margin-bottom: 3rem;">
                 <div class="post-content" style="line-height: 1.8; font-size: 1.1rem; color: #cbd5e1;">${formatContent(post.content)}</div>
             `)
             .replace('display: none; /* Shown only when slug is present */', 'display: block;')
