@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkyHigh Stories | Ölüdeniz Paragliding Blog</title>
+    <meta name="description" content="Latest paragliding news and expert flight stories from the SkyHigh team in Ölüdeniz, Fethiye.">
+    <link rel="canonical" href="<!-- CANONICAL_URL -->https://www.paragliding-oludeniz.com/blog">
+    <link rel="icon" type="image/png" href="/assets/thumb.png">
+    <link rel="stylesheet" href="/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800;900&display=swap" rel="stylesheet">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="SkyHigh Stories | Ölüdeniz Paragliding Blog">
+    <meta property="og:description" content="Latest paragliding news and expert flight stories from Babadağ Mountain.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="<!-- OG_URL -->https://www.paragliding-oludeniz.com/blog">
+    <meta property="og:image" content="https://www.paragliding-oludeniz.com/assets/hero.png">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="SkyHigh Stories | Ölüdeniz Paragliding Blog">
+    <meta name="twitter:description" content="Expert flight stories and paragliding guides from Babadağ Mountain.">
+    <meta name="twitter:image" content="https://www.paragliding-oludeniz.com/assets/hero.png">
+
+    <!-- Breadcrumb Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://www.paragliding-oludeniz.com/"
+      },{
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Blog"
+      }]
+    }
+    </script>
+
+    <style>
+        .blog-header {
+            padding: 8rem 5% 4rem;
+            text-align: center;
+            background: linear-gradient(to bottom, rgba(0, 210, 255, 0.1), transparent);
+        }
+        
+        #post-detail {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 5rem 5%;
+            display: none; /* Shown only when slug is present */
+        }
+        
+        #post-detail img {
+            width: 100%;
+            border-radius: var(--radius);
+            margin-bottom: 2rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        
+        .post-content {
+            font-size: 1.15rem;
+            color: var(--text-light);
+            line-height: 1.8;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-mesh"></div>
+
+    <header>
+        <div class="logo"><a href="/" style="text-decoration: none; color: inherit;">SkyHigh Ölüdeniz</a></div>
+        <button class="hamburger" aria-label="Open navigation menu" onclick="document.querySelector('nav').classList.toggle('nav-open')">
+            <span></span><span></span><span></span>
+        </button>
+        <nav aria-label="Main navigation">
+            <a href="/">Home</a>
+            <a href="/blog" style="color: var(--primary)">Blog</a>
+            <a href="/pricing">Pricing</a>
+            <a href="/safety">Safety</a>
+            <a href="/location">Babadağ</a>
+            <a href="/faq">FAQ</a>
+            <a href="/booking" class="cta-btn" style="padding: 0.8rem 1.5rem;">Book Now</a>
+        </nav>
+    </header>
+
+    <!-- Blog List View -->
+    <div id="blog-list-view">
+        <section class="blog-header">
+            <h1>SkyHigh <span style="color: var(--primary)">Stories</span></h1>
+            <p>Daily updates from the most beautiful flight path in the world.</p>
+        </section>
+
+        <section id="blog-posts" class="grid">
+            
+        <article class="blog-card">
+            <img src="https://images.unsplash.com/photo-1533130061792-64b345e4a833?auto=format&fit=crop&w=800" alt="Supabase ile Dinamik Blog Yönetimi: SkyHigh Ölüdeniz - Ölüdeniz paragliding" class="blog-img">
+            <div class="blog-content">
+                <span style="font-size: 0.75rem; color: var(--primary); font-weight: 700; text-transform: uppercase;">Technology</span>
+                <h3 class="blog-title">Supabase ile Dinamik Blog Yönetimi: SkyHigh Ölüdeniz</h3>
+                <p class="blog-excerpt">SkyHigh Ölüdeniz blog altyapısını Supabase ile nasıl daha dinamik hale getirdiğimizi keşfedin.</p>
+                <a href="/blog/supabase-ile-dinamik-blog-yonetimi" class="read-more">Read Story</a>
+            </div>
+        </article>
+        <article class="blog-card">
+            <img src="https://files.manuscdn.com/user_upload_by_module/session_file/86308666/rTwQTxlZndKhNRnH.png" alt="Ölüdeniz'de Gökyüzü Özgürlüğü: Yamaç Paraşütü Rehberi - Ölüdeniz paragliding" class="blog-img">
+            <div class="blog-content">
+                <span style="font-size: 0.75rem; color: var(--primary); font-weight: 700; text-transform: uppercase;">Adventure</span>
+                <h3 class="blog-title">Ölüdeniz'de Gökyüzü Özgürlüğü: Yamaç Paraşütü Rehberi</h3>
+                <p class="blog-excerpt">Ölüdeniz’in eşsiz turkuaz suları üzerinde, Babadağ’ın zirvesinden unutulmaz bir uçuşa hazır mısınız?</p>
+                <a href="/blog/oludenizde-gokyuzu-ozgurlugu-yamac-parasutu-rehberi" class="read-more">Read Story</a>
+            </div>
+        </article>
+        <article class="blog-card">
+            <img src="/assets/hero.png" alt="Soaring High: My First Paragliding Experience - Ölüdeniz paragliding" class="blog-img">
+            <div class="blog-content">
+                <span style="font-size: 0.75rem; color: var(--primary); font-weight: 700; text-transform: uppercase;">Paragliding Adventures</span>
+                <h3 class="blog-title">Soaring High: My First Paragliding Experience</h3>
+                <p class="blog-excerpt">My first paragliding flight was an unforgettable experience of freedom and breathtaking views. From the exhilarating launch to the graceful descent, I soared above the world, feeling truly one with the sky. A must-try adventure for anyone dreaming of flight!</p>
+                <a href="/blog/my-first-paragliding-experience-2026-04-20" class="read-more">Read Story</a>
+            </div>
+        </article>
+        <article class="blog-card">
+            <img src="/assets/hero.png" alt="Soaring High: The Beginner's Guide to Paragliding - Ölüdeniz paragliding" class="blog-img">
+            <div class="blog-content">
+                <span style="font-size: 0.75rem; color: var(--primary); font-weight: 700; text-transform: uppercase;">Adventure Sports</span>
+                <h3 class="blog-title">Soaring High: The Beginner's Guide to Paragliding</h3>
+                <p class="blog-excerpt">Ever dreamed of flying? Paragliding offers an exhilarating and accessible way to soar. This beginner's guide covers the basics, safety, training, and where to experience the thrill of flight.</p>
+                <a href="/blog/beginners-guide-paragliding-2026-04-17" class="read-more">Read Story</a>
+            </div>
+        </article>
+        </section>
+    </div>
+
+    <!-- Post Detail View -->
+    <article id="post-detail">
+        <a href="/blog" class="back-btn">← Back to Stories</a>
+        <div id="post-content-inner">
+            <!-- POST_DETAIL_INJECTION -->
+        </div>
+    </article>
+
+    <footer>
+        <p>&copy; 2026 SkyHigh Ölüdeniz Paragliding. Licensed Flight School #48K34.</p>
+        <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.5rem;">Belcekiz Beach Office, 48340 Fethiye/Muğla, Turkey</p>
+        <div style="margin-top: 1.5rem;">
+            <a href="/" style="color: var(--text-muted); margin: 0 10px;">Home</a>
+            <a href="/blog" style="color: var(--text-muted); margin: 0 10px;">Blog</a>
+            <a href="/pricing" style="color: var(--text-muted); margin: 0 10px;">Pricing</a>
+            <a href="/safety" style="color: var(--text-muted); margin: 0 10px;">Safety</a>
+            <a href="/location" style="color: var(--text-muted); margin: 0 10px;">Babadağ Guide</a>
+            <a href="/faq" style="color: var(--text-muted); margin: 0 10px;">FAQ</a>
+            <a href="/booking" style="color: var(--text-muted); margin: 0 10px;">Booking</a>
+        </div>
+    </footer>
+
+    <script src="/script.js"></script>
+    <!-- Static Archive Rendered -->
+</body>
+</html>

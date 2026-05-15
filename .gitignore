@@ -1,0 +1,7 @@
+.DS_Store
+Thumbs.db
+desktop.ini
+.gemini/
+*.log
+node_modules/
+tmp-app/

@@ -1,0 +1,13 @@
+{
+  "name": "seoparagliding",
+  "version": "1.0.0",
+  "description": "Premium Static-Generated Paragliding SEO Site",
+  "scripts": {
+    "build": "node generate.js",
+    "start": "serve dist"
+  },
+  "type": "module",
+  "devDependencies": {
+    "serve": "^14.2.1"
+  }
+}

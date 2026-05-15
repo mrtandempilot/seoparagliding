@@ -1,0 +1,179 @@
+{
+  "name": "Paragliding Blog Auto-Publisher FIXED",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 8 * * *"
+            }
+          ]
+        }
+      },
+      "id": "ccd68541-fa6e-4562-8c14-71d293311cf2",
+      "name": "Daily Schedule",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [
+        800,
+        48
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://openrouter.ai/api/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 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"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"google/gemini-2.5-flash\",\n  \"messages\": [\n    {\"role\": \"system\", \"content\": \"You are an Expert Paragliding Authority & Professional Pilot. Your goal is to write high-authority, technical SEO content about paragliding in Ölüdeniz. Return ONLY JSON.\"},\n    {\"role\": \"user\", \"content\": \"Write a technical, authoritative blog post about Babadağ paragliding. Focus on safety certifications (THK T2, EN 926), weather patterns (Lodos vs Poyraz), or specific flight heights (1700m/1960m). Use strong Markdown headers (##, ###). JSON Fields: title, slug, content, excerpt, category, image_url.\"}\n  ],\n  \"temperature\": 0.7\n}",
+        "options": {}
+      },
+      "id": "c275fdb7-3fb9-4d13-876s-01f7119a969a",
+      "name": "AI Writer",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        1008,
+        52
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $input.first().json;\n\nlet text = raw.choices[0].message.content;\ntext = text.replace(/```json/g,'').replace(/```/g,'').trim();\n\nconst parsed = JSON.parse(text);\n\nparsed.slug = parsed.slug\n  .toLowerCase()\n  .replace(/[^a-z0-9-]/g, '-')\n  .replace(/-+/g, '-')\n  .replace(/^-|-$/g, '');\n\nconst today = new Date().toISOString().split('T')[0];\nparsed.slug += '-' + today;\n\nif (!parsed.image_url) {\n  parsed.image_url = `https://picsum.photos/seed/${parsed.slug}/800/600`;\n}\n\nparsed.ai_model = 'openrouter';\n\nreturn [{ json: parsed }];"
+      },
+      "id": "31173ba8-14ce-4e26-b8ae-c0c81cb52f9a",
+      "name": "Parse JSON",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1200,
+        48
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://ejmybxnysrgjjixyialf.supabase.co/rest/v1/posts",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "sb_publishable_cd_omyqW7M3WR37MKn7-iA_s7zH0iPA"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer sb_publishable_cd_omyqW7M3WR37MKn7-iA_s7zH0iPA"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"title\": {{ JSON.stringify($json.title) }},\n  \"slug\": {{ JSON.stringify($json.slug) }},\n  \"content\": {{ JSON.stringify($json.content) }},\n  \"excerpt\": {{ JSON.stringify($json.excerpt) }},\n  \"category\": {{ JSON.stringify($json.category) }},\n  \"image_url\": {{ JSON.stringify($json.image_url) }},\n  \"author\": \"AI\",\n  \"created_at\": {{ JSON.stringify($now) }},\n  \"ai_model\": {{ JSON.stringify($json.ai_model) }}\n}",
+        "options": {}
+      },
+      "id": "bc8f0dd9-e575-4b9a-8ce7-7cbe0539030d",
+      "name": "Post to Supabase",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        1408,
+        48
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.vercel.com/v1/integrations/deploy/prj_U6edMXdPDnoiBL6juQ9LdrVbFPDz/AzZuSqdbL5",
+        "sendBody": false,
+        "options": {}
+      },
+      "id": "e93fca41-2b36-4d9f-864b-e8f0a2839d4c",
+      "name": "Trigger Vercel SEO Build",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        1608,
+        48
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Daily Schedule": {
+      "main": [
+        [
+          {
+            "node": "AI Writer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Writer": {
+      "main": [
+        [
+          {
+            "node": "Parse JSON",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse JSON": {
+      "main": [
+        [
+          {
+            "node": "Post to Supabase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Post to Supabase": {
+      "main": [
+        [
+          {
+            "node": "Trigger Vercel SEO Build",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "8ca072ef-8657-4c09-845f-28f13a8e6769",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "b49bd123aff4bdf0382a2caf76c5502302a51a95f6d9edded5c4608aa5380685"
+  },
+  "id": "n4HJIXD50JzRyssX",
+  "tags": []
+}

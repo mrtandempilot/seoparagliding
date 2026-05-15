@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><!-- PAGE_TITLE -->SkyHigh Stories | Ölüdeniz Paragliding Blog</title>
+    <meta name="description" content="<!-- PAGE_DESCRIPTION -->Latest paragliding news and expert flight stories from the SkyHigh team in Ölüdeniz, Fethiye.">
+    <link rel="canonical" href="<!-- CANONICAL_URL -->https://www.paragliding-oludeniz.com/blog">
+    <link rel="icon" type="image/png" href="/assets/thumb.png">
+    <link rel="stylesheet" href="/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800;900&display=swap" rel="stylesheet">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="SkyHigh Stories | Ölüdeniz Paragliding Blog">
+    <meta property="og:description" content="Latest paragliding news and expert flight stories from Babadağ Mountain.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="<!-- OG_URL -->https://www.paragliding-oludeniz.com/blog">
+    <meta property="og:image" content="https://www.paragliding-oludeniz.com/assets/hero.png">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="SkyHigh Stories | Ölüdeniz Paragliding Blog">
+    <meta name="twitter:description" content="Expert flight stories and paragliding guides from Babadağ Mountain.">
+    <meta name="twitter:image" content="https://www.paragliding-oludeniz.com/assets/hero.png">
+
+    <!-- Breadcrumb Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://www.paragliding-oludeniz.com/"
+      },{
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Blog"
+      }]
+    }
+    </script>
+
+    <style>
+        .blog-header {
+            padding: 8rem 5% 4rem;
+            text-align: center;
+            background: linear-gradient(to bottom, rgba(0, 210, 255, 0.1), transparent);
+        }
+        
+        #post-detail {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 5rem 5%;
+            display: none; /* Shown only when slug is present */
+        }
+        
+        #post-detail img {
+            width: 100%;
+            border-radius: var(--radius);
+            margin-bottom: 2rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        
+        .post-content {
+            font-size: 1.15rem;
+            color: var(--text-light);
+            line-height: 1.8;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-mesh"></div>
+
+    <header>
+        <div class="logo"><a href="/" style="text-decoration: none; color: inherit;">SkyHigh Ölüdeniz</a></div>
+        <button class="hamburger" aria-label="Open navigation menu" onclick="document.querySelector('nav').classList.toggle('nav-open')">
+            <span></span><span></span><span></span>
+        </button>
+        <nav aria-label="Main navigation">
+            <a href="/">Home</a>
+            <a href="/blog" style="color: var(--primary)">Blog</a>
+            <a href="/pricing">Pricing</a>
+            <a href="/safety">Safety</a>
+            <a href="/location">Babadağ</a>
+            <a href="/faq">FAQ</a>
+            <a href="/booking" class="cta-btn" style="padding: 0.8rem 1.5rem;">Book Now</a>
+        </nav>
+    </header>
+
+    <!-- Blog List View -->
+    <div id="blog-list-view">
+        <section class="blog-header">
+            <h2>SkyHigh <span style="color: var(--primary)">Stories</span></h2>
+            <p>Daily updates from the most beautiful flight path in the world.</p>
+        </section>
+
+        <section id="blog-posts" class="grid">
+            <!-- LATEST_POSTS_INJECTION -->
+        </section>
+    </div>
+
+    <!-- Post Detail View -->
+    <article id="post-detail">
+        <a href="/blog" class="back-btn">← Back to Stories</a>
+        <div id="post-content-inner">
+            <!-- POST_DETAIL_INJECTION -->
+        </div>
+    </article>
+
+    <footer>
+        <p>&copy; 2026 SkyHigh Ölüdeniz Paragliding. Licensed Flight School #48K34.</p>
+        <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.5rem;">Belcekiz Beach Office, 48340 Fethiye/Muğla, Turkey</p>
+        <div style="margin-top: 1.5rem;">
+            <a href="/" style="color: var(--text-muted); margin: 0 10px;">Home</a>
+            <a href="/blog" style="color: var(--text-muted); margin: 0 10px;">Blog</a>
+            <a href="/pricing" style="color: var(--text-muted); margin: 0 10px;">Pricing</a>
+            <a href="/safety" style="color: var(--text-muted); margin: 0 10px;">Safety</a>
+            <a href="/location" style="color: var(--text-muted); margin: 0 10px;">Babadağ Guide</a>
+            <a href="/faq" style="color: var(--text-muted); margin: 0 10px;">FAQ</a>
+            <a href="/booking" style="color: var(--text-muted); margin: 0 10px;">Booking</a>
+        </div>
+    </footer>
+
+    <script src="/script.js"></script>
+    <script>
+        async function handleRouting() {
+            // Priority 1: Static Injection
+            // If POST_DETAIL_INJECTION was replaced, the element will have content.
+            const staticContent = document.getElementById('post-content-inner');
+            if (staticContent && staticContent.children.length > 0) {
+                return; // Content is already here thanks to SSG
+            }
+
+            // Priority 2: Legacy Query Param Fallback
+            const params = new URLSearchParams(window.location.search);
+            const slug = params.get('slug');
+
+            if (slug) {
+                document.getElementById('blog-list-view').style.display = 'none';
+                document.getElementById('post-detail').style.display = 'block';
+                await loadPostDetail(slug);
+            } else {
+                // If we are on the list page and no static cards were injected
+                fetchLatestPosts(12);
+            }
+        }
+
+        async function loadPostDetail(slug) {
+            const container = document.getElementById('post-content-inner');
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/posts?slug=eq.${slug}&limit=1`, {
+                    headers: {
+                        'apikey': ANON_KEY,
+                        'Authorization': `Bearer ${ANON_KEY}`
+                    }
+                });
+                const [post] = await response.json();
+
+                if (!post) {
+                    container.innerHTML = "<h1>Story not found</h1><p>It seems this adventure has drifted away.</p>";
+                    return;
+                }
+
+                document.title = `${post.title} | SkyHigh Stories`;
+                
+                const formattedContent = post.content
+                    .replace(/^# (.*$)/gim, '<h2 style="margin-top:2rem;">$1</h2>')
+                    .replace(/^## (.*$)/gim, '<h3 style="margin-top:1.5rem;">$1</h3>')
+                    .replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>')
+                    .replace(/^\- (.*$)/gim, '<li style="margin-left:1.5rem; margin-bottom:0.5rem;">$1</li>')
+                    .replace(/\n/g, '<br>');
+
+                container.innerHTML = `
+                    <p style="color: var(--primary); font-weight: 700; margin-bottom: 0.5rem;">${post.category || 'Adventure'} • <time datetime="${post.created_at}">${new Date(post.created_at).toLocaleDateString()}</time></p>
+                    <h1 style="font-size: 3rem; margin-bottom: 2rem; line-height: 1.2;">${post.title}</h1>
+                    <img src="${post.image_url || 'https://images.unsplash.com/photo-1596895111956-6277744f9548?auto=format&fit=crop&w=800'}" alt="${post.title} - Ölüdeniz paragliding" style="width: 100%; border-radius: var(--radius); margin-bottom: 3rem;">
+                    <div class="post-content" style="line-height: 1.8; font-size: 1.1rem; color: #cbd5e1;">${formattedContent}</div>
+                `;
+
+            } catch (error) {
+                container.innerHTML = "<p>Error loading story.</p>";
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', handleRouting);
+    </script>
+</body>
+</html>

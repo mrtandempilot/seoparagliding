@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "buildCommand": "node generate.js",
+  "outputDirectory": "dist",
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/blog/:slug", "destination": "/blog/:slug.html" }
+  ]
+}
