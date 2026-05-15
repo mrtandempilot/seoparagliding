@@ -168,7 +168,7 @@ async function generate() {
 
     // 8. Copy Static Assets & Files
     const filesToCopy = [
-        'style.css', 'script.js', 'robots.txt',
+        'style.css', 'script.js', 'robots.txt', 'google0ea4b84cd5b64d00.html',
         // Core pages
         'pricing.html', 'safety.html', 'location.html', 'faq.html', 'booking.html',
         // Money pages — Main
