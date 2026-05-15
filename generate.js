@@ -37,7 +37,7 @@ async function generate() {
                 slug: "oludeniz-paragliding-price-guide-2026",
                 excerpt: "Current rates, package inclusions, and how to book the best tandem flight in Fethiye.",
                 category: "Pricing",
-                image_url: "https://images.unsplash.com/photo-1596895111956-6277744f9548?auto=format&fit=crop&w=1200",
+                image_url: "https://images.unsplash.com/photo-1533310266094-8898a03807dd?auto=format&fit=crop&w=1200",
                 content: "# Ölüdeniz Paragliding Pricing 2026\n\nHow much does it cost to fly in Ölüdeniz? Here is the breakdown:\n\n- Standard Tandem: $150\n- 4K Media Bundle: $190\n- Sunset Premium: $200"
             };
         }
@@ -145,7 +145,7 @@ async function generate() {
             .replace('<!-- POST_DETAIL_INJECTION -->', `
                 <p style="color: var(--primary); font-weight: 700; margin-bottom: 0.5rem;">${post.category || 'Adventure'} • <time datetime="${post.created_at}">${new Date(post.created_at).toLocaleDateString()}</time></p>
                 <h1 style="font-size: 3rem; margin-bottom: 2rem; line-height: 1.2;">${post.title}</h1>
-                <img src="${(post.image_url && !post.image_url.includes('example.com')) ? post.image_url : 'https://images.unsplash.com/photo-1596895111956-6277744f9548?auto=format&fit=crop&w=1200'}" alt="${post.title} - Ölüdeniz paragliding" style="width: 100%; border-radius: var(--radius); margin-bottom: 3rem;">
+                <img src="${(post.image_url && !post.image_url.includes('example.com')) ? post.image_url : 'https://images.unsplash.com/photo-1533310266094-8898a03807dd?auto=format&fit=crop&w=1200'}" alt="${post.title} - Ölüdeniz paragliding" style="width: 100%; border-radius: var(--radius); margin-bottom: 3rem;">
                 <div class="post-content" style="line-height: 1.8; font-size: 1.1rem; color: #cbd5e1;">${formatContent(post.content)}</div>
             `)
             .replace('display: none; /* Shown only when slug is present */', 'display: block;')
